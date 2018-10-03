@@ -11,7 +11,7 @@ namespace Latihan_Module_1
     public static class Connection
     {
         // Connection String
-        static string connectionString =
+        public static readonly string connectionString =
             "Server=localhost;" +
             "Database=Session1;" +
             "Integrated Security=True";

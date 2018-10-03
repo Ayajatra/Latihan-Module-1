@@ -21,6 +21,22 @@ namespace Latihan_Module_1
         private void Form1_Load(object sender, EventArgs e)
         {
             Connection.OpenConnection();
+
+            // Ambil data table [Activity] dari database
+            using (var connection = new SqlConnection(Connection.connectionString))
+            {
+                connection.Open();
+                var command = new SqlCommand("select * from [Activity]", connection);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    // TODO Buat datagridviewnya berfungsi
+                    var activityTable = new DataTable();
+                    activityTable.Load(reader);
+
+                    dataGridView1.DataSource = reader;
+                }
+            }
         }
     }
 }
