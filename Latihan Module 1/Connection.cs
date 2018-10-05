@@ -5,27 +5,27 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using System.Configuration;
+using System.Data;
 
 namespace Latihan_Module_1
 {
     public static class Connection
     {
-        // Connection String
-        public static readonly string connectionString =
-            "Server=localhost;" +
-            "Database=Session1;" +
-            "Integrated Security=True";
+        // Ambil connectionString dari App.config
+        public static readonly string connectionString = ConfigurationManager.ConnectionStrings["Session1"].ConnectionString;
+        public static SqlConnection connection = new SqlConnection(connectionString);
+        public static SqlCommand command;
+        public static SqlDataAdapter adapter;
+        public static DataSet dataSet = new DataSet();
 
         public static void OpenConnection()
         {
-            MessageBox.Show("Connecting to SQL Server");
+            // MessageBox.Show("Connecting to SQL Server");
             try
             {
-                using (var connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-                    MessageBox.Show("Connected");
-                }
+                connection.Open();
+                // MessageBox.Show("Connected");
             }
             catch (SqlException error)
             {
