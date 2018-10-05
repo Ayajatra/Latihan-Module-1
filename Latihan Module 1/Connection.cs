@@ -17,7 +17,7 @@ namespace Latihan_Module_1
         public static SqlConnection connection = new SqlConnection(connectionString);
         public static SqlCommand command;
         public static SqlDataAdapter adapter;
-        public static DataSet dataSet = new DataSet();
+        public static DataTable table = new DataTable();
 
         public static void OpenConnection()
         {
