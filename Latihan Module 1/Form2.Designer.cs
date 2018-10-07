@@ -32,7 +32,7 @@
             this.comboBoxOffice = new System.Windows.Forms.ComboBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.buttonChangeRole = new System.Windows.Forms.Button();
-            this.buttonEnableDisableLogin = new System.Windows.Forms.Button();
+            this.buttonEnableLogin = new System.Windows.Forms.Button();
             this.buttonAddUser = new System.Windows.Forms.Button();
             this.buttonExit = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -70,9 +70,11 @@
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.Size = new System.Drawing.Size(648, 295);
             this.dataGridView1.TabIndex = 3;
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
             // buttonChangeRole
             // 
+            this.buttonChangeRole.Enabled = false;
             this.buttonChangeRole.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonChangeRole.Location = new System.Drawing.Point(12, 375);
             this.buttonChangeRole.Name = "buttonChangeRole";
@@ -80,16 +82,19 @@
             this.buttonChangeRole.TabIndex = 1;
             this.buttonChangeRole.Text = "Change Role";
             this.buttonChangeRole.UseVisualStyleBackColor = true;
+            this.buttonChangeRole.Click += new System.EventHandler(this.buttonChangeRole_Click);
             // 
-            // buttonEnableDisableLogin
+            // buttonEnableLogin
             // 
-            this.buttonEnableDisableLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonEnableDisableLogin.Location = new System.Drawing.Point(141, 375);
-            this.buttonEnableDisableLogin.Name = "buttonEnableDisableLogin";
-            this.buttonEnableDisableLogin.Size = new System.Drawing.Size(173, 36);
-            this.buttonEnableDisableLogin.TabIndex = 2;
-            this.buttonEnableDisableLogin.Text = "Enable/Disable Login";
-            this.buttonEnableDisableLogin.UseVisualStyleBackColor = true;
+            this.buttonEnableLogin.Enabled = false;
+            this.buttonEnableLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonEnableLogin.Location = new System.Drawing.Point(141, 375);
+            this.buttonEnableLogin.Name = "buttonEnableLogin";
+            this.buttonEnableLogin.Size = new System.Drawing.Size(173, 36);
+            this.buttonEnableLogin.TabIndex = 2;
+            this.buttonEnableLogin.Text = "Enable/Disable Login";
+            this.buttonEnableLogin.UseVisualStyleBackColor = true;
+            this.buttonEnableLogin.Click += new System.EventHandler(this.buttonEnableLogin_Click);
             // 
             // buttonAddUser
             // 
@@ -103,6 +108,7 @@
             this.buttonAddUser.TabIndex = 3;
             this.buttonAddUser.Text = "&Add User";
             this.buttonAddUser.UseVisualStyleBackColor = false;
+            this.buttonAddUser.Click += new System.EventHandler(this.buttonAddUser_Click);
             // 
             // buttonExit
             // 
@@ -116,6 +122,7 @@
             this.buttonExit.TabIndex = 4;
             this.buttonExit.Text = "&Exit";
             this.buttonExit.UseVisualStyleBackColor = false;
+            this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             // 
             // label2
             // 
@@ -133,7 +140,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.buttonExit);
             this.Controls.Add(this.buttonAddUser);
-            this.Controls.Add(this.buttonEnableDisableLogin);
+            this.Controls.Add(this.buttonEnableLogin);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonChangeRole);
             this.Controls.Add(this.dataGridView1);
@@ -151,11 +158,11 @@
         #endregion
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBoxOffice;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button buttonChangeRole;
-        private System.Windows.Forms.Button buttonEnableDisableLogin;
+        private System.Windows.Forms.Button buttonEnableLogin;
         private System.Windows.Forms.Button buttonAddUser;
         private System.Windows.Forms.Button buttonExit;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }

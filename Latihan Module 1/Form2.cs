@@ -53,7 +53,7 @@ namespace Latihan_Module_1
             ShowData();
         }
 
-        private void ShowData()
+        public void ShowData()
         {
             string selectedOffice = comboBoxOffice.SelectedItem.ToString();
 
@@ -63,7 +63,7 @@ namespace Latihan_Module_1
                 selectedOffice = "' or 1='1";
             }
 
-            Connection.adapter = new SqlDataAdapter("select U.FirstName as Name, U.LastName as 'Last Name', datediff(year, U.Birthdate, convert(date, getdate())) as Age, R.Title as 'User Role', U.Email as 'Email Address', O.Title as Office, U.Active" +
+            Connection.adapter = new SqlDataAdapter("select U.ID, U.FirstName as Name, U.LastName as 'Last Name', datediff(year, U.Birthdate, convert(date, getdate())) as Age, R.Title as 'User Role', U.Email as 'Email Address', O.Title as Office, U.Active" +
                 " from Users as U" +
                 " inner join Roles as R on U.RoleID = R.ID" +
                 " inner join Offices as O on U.OfficeID = O.ID" +
@@ -72,6 +72,7 @@ namespace Latihan_Module_1
             Connection.table.Clear();
             Connection.adapter.Fill(Connection.table);
             dataGridView1.DataSource = Connection.table;
+            dataGridView1.Columns["ID"].Visible = false;
             dataGridView1.Columns["Active"].Visible = false;
             ColorData();
         }
@@ -90,6 +91,122 @@ namespace Latihan_Module_1
                     row.DefaultCellStyle.BackColor = Color.LightGreen;
                 }
             }
+        }
+
+        private void buttonEnableLogin_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int cellId = Convert.ToInt32(dataGridView1.CurrentCell.OwningRow.Cells["ID"].Value);
+                string sql;
+                if (buttonEnableLogin.Text == "Enable Login")
+                {
+                    sql = "update Users" +
+                        " set Active=1" +
+                        $" where ID={cellId}";
+                }
+                else
+                {
+                    sql = "update Users" +
+                        " set Active=0" +
+                        $" where ID={cellId}";
+                }
+                Connection.command = new SqlCommand(sql, Connection.connection);
+                Connection.command.ExecuteNonQuery();
+                ShowData();
+                buttonEnableLogin.Text = "Enable/Disable Login";
+                buttonEnableLogin.Enabled = false;
+            }
+            catch { }
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int active = Convert.ToInt32(dataGridView1.CurrentCell.OwningRow.Cells["Active"].Value);
+            string role = Convert.ToString(dataGridView1.CurrentCell.OwningRow.Cells["User Role"].Value);
+            if (active == 0)
+            {
+                if (role != "Administrator")
+                {
+                    buttonEnableLogin.Text = "Enable Login";
+                    buttonEnableLogin.Enabled = true;
+                }
+                else
+                {
+                    buttonEnableLogin.Text = "Enable/Disable Login";
+                    buttonEnableLogin.Enabled = false;
+                }
+            }
+            else
+            {
+                if (role != "Administrator")
+                {
+                    buttonEnableLogin.Text = "Disable Login";
+                    buttonEnableLogin.Enabled = true;
+                }
+                else
+                {
+                    buttonEnableLogin.Text = "Enable/Disable Login";
+                    buttonEnableLogin.Enabled = false;
+                }
+            }
+
+            buttonChangeRole.Enabled = true;
+        }
+
+        private void buttonAddUser_Click(object sender, EventArgs e)
+        {
+            Form3 form3 = new Form3();
+            form3.buttonSave.Click += ButtonSave_Click;
+            form3.ShowDialog();
+        }
+
+        private void ButtonSave_Click(object sender, EventArgs e)
+        {
+            ShowData();
+        }
+
+        private void buttonExit_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void buttonChangeRole_Click(object sender, EventArgs e)
+        {
+            var form4 = new Form4();
+            form4.buttonApply.Click += ButtonApply_Click;
+
+            form4.ID = dataGridView1.CurrentCell.OwningRow.Cells["ID"].Value.ToString();
+            form4.textBoxEmail.Text = dataGridView1.CurrentCell.OwningRow.Cells["Email Address"].Value.ToString();
+            form4.textBoxFirstName.Text = dataGridView1.CurrentCell.OwningRow.Cells["Name"].Value.ToString();
+            form4.textBoxLastName.Text = dataGridView1.CurrentCell.OwningRow.Cells["Last Name"].Value.ToString();
+
+            // Copy form2.Combobox ke form4.Combobox
+            // Supaya bisa cari nama office yang sesuai
+            form4.comboBoxOffice.Items.AddRange(comboBoxOffice.Items.Cast<object>().ToArray());            
+
+            // Munculkan nama office sesuai dengan datagridview
+            string office = dataGridView1.CurrentCell.OwningRow.Cells["Office"].Value.ToString();
+            int officeIndex = form4.comboBoxOffice.FindStringExact(office);
+            form4.comboBoxOffice.SelectedIndex = officeIndex;
+
+            string userRole = dataGridView1.CurrentCell.OwningRow.Cells["User Role"].Value.ToString();
+            if (userRole == "User")
+            {
+                form4.radioButtonUser.Checked = true;
+            }
+            else if (userRole == "Administrator")
+            {
+                form4.radioButtonAdmin.Checked = true;
+            }
+
+            form4.ShowDialog();
+            buttonChangeRole.Enabled = false;
+        }
+
+        private void ButtonApply_Click(object sender, EventArgs e)
+        {
+            ShowData();
         }
     }
 }

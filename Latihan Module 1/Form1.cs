@@ -67,9 +67,39 @@ namespace Latihan_Module_1
                     bool active = Convert.ToBoolean(Connection.command.ExecuteScalar());
                     if (active)
                     {
-                        var form2 = new Form2();
-                        form2.Show();
-                        Hide();
+                        // Check apakah administrator atau tidak
+                        bool isAdministrator = false;
+                        Connection.command = new SqlCommand("select RoleID from Users where Email=@Email and Password=@Password", Connection.connection);
+                        Connection.command.Parameters.Add("@Email", SqlDbType.NVarChar, 150).Value = textBoxUsername.Text;
+                        Connection.command.Parameters.Add("@Password", SqlDbType.NVarChar, 50).Value = textBoxPassword.Text;
+                        int RoleID = Convert.ToInt32(Connection.command.ExecuteScalar());
+                        if (RoleID == 1)
+                        {
+                            isAdministrator = true;
+                        }
+
+                        if (isAdministrator)
+                        {
+                            var form2 = new Form2();
+                            form2.Show();
+                            Hide();
+                        }
+                        else
+                        {
+                            var form5 = new Form5();
+                            // Atur label
+
+                            Connection.adapter = new SqlDataAdapter("select FirstName, LastName from Users where Email=@Email and Password=@Password", Connection.connection);
+                            Connection.adapter.SelectCommand.Parameters.Add("@Email", SqlDbType.NVarChar, 150).Value = textBoxUsername.Text;
+                            Connection.adapter.SelectCommand.Parameters.Add("@Password", SqlDbType.NVarChar, 50).Value = textBoxPassword.Text;
+                            Connection.adapter.Fill(Connection.table);
+                            string[] nameArray = Connection.table.Rows[0].ItemArray.Select(x => x.ToString()).ToArray();
+                            string name = string.Join(" ", nameArray);
+                            form5.labelWelcome.Text = $"Hello {name}, Welcome to AMONIC Airlines.";
+
+                            form5.Show();
+                            Hide();
+                        }
                     }
                     else
                     {
